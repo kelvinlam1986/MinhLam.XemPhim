@@ -188,6 +188,16 @@ namespace MinhLam.XemPhim.Domain.Entities
             }
         }
 
+        public void RemoveRoles(IAccountRepository accountRepository)
+        {
+            foreach (var userRole in this.UserRoles)
+            {
+                accountRepository.RemoveRole(userRole);
+            }
+
+            this.UserRoles.Clear();
+        }
+
         public void Update(
             string name, 
             string phone, 
@@ -238,6 +248,18 @@ namespace MinhLam.XemPhim.Domain.Entities
                 GroupId = groupId;
                 UserType = userType;
             }
+        }
+
+        public void Remove(ICheckExisting checkExisting, IAccountRepository accountRepository)
+        {
+            if (checkExisting.AccountExistWithId(Id) == false)
+            {
+                throw new DomainException(DomainExceptionCodes.AccountNotExist,
+                    "Không tìm thấy tài khoản");
+            }
+
+            RemoveRoles(accountRepository);
+            accountRepository.Remove(this);
         }
     }
 

@@ -114,5 +114,19 @@ namespace MinhLam.XemPhim.Infrastructure.Services
             account.Update(cmd.Name, cmd.Phone, cmd.IsActive, cmd.GroupId, checkExisting, getData, accountRepository);
             this.context.SaveChanges();
         }
+
+        public void Remove(RemoveAccountCommand cmd)
+        {
+            var account = this.getData.GetAccountAndRoles(cmd.Id);
+            if (account == null)
+            {
+                throw new ApplicationServiceException(
+                    ApplicationExceptionCodes.AccountNotExist,
+                    "Tài khoản không tồn tại. Xin liên hệ quản trị để kiểm tra lại.");
+            }
+
+            account.Remove(checkExisting, accountRepository);
+            this.context.SaveChanges();
+        }
     }
 }

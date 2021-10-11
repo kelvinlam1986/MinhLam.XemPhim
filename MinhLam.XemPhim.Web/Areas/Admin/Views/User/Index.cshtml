@@ -82,17 +82,38 @@
                             <a title="Sửa" class="btn btn-outline-success" asp-action="Edit" asp-route-id="@item.Id">
                                 <i class="fa fa-pencil"></i>
                             </a>
-                            <button class="btn btn-outline-warning">
-                                <i class="fa fa-trash-o">
-                                    @*@Ajax.ActionLink("Xoá", "Delete", new { @id = item.UserID }, new AjaxOptions
-                    {
-                        Confirm = "Bạn có muốn xoá bản ghi này?",
-                        OnComplete = "$('row_" + @item.UserID + "').remove()",
-                        HttpMethod = "Delete"
-                    })*@
-                                </i>
-
+                            <button class="btn btn-outline-warning" type="button"
+                                    data-toggle="modal" data-target="#RemoveUser@(item.Id)">
+                                <i class="fa fa-trash-o"></i>
                             </button>
+                            <!-- Remove User Modal -->
+                            <div class="modal fade" id="RemoveUser@(item.Id)"
+                                 tabindex="-1"
+                                 role="dialog"
+                                 aria-labelledby="myModalLabel"
+                                 aria-hidden="true"
+                                 style="display: none;">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title"> Xoá tài khoản</h5>
+                                            <button type="button" class="close"
+                                                    data-dismiss="modal" aria-hidden="true">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        @{
+                                            var removeCustomer = new RemoveAccountDto
+                                            {
+                                                Id = item.Id,
+                                                Name = item.Name,
+                                                UserName = item.Username
+                                            };
+                                        }
+                                        <partial name="Remove" model="@removeCustomer"/>
+                                    </div>
+                                </div>
+                            </div>
                         </td>
                     </tr>
                         }

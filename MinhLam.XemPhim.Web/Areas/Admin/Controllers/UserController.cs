@@ -152,79 +152,34 @@ namespace MinhLam.XemPhim.Web.Areas.Admin.Controllers
 
         }
 
-        [WithRole(RoleNames = "INSERT_USER,UPDATE_USER")]
-        public ActionResult Add(AccountDTO model, string submit)
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [WithRole(RoleNames = "VIEW_USER_READONLY,DELETE_USER")]
+        public IActionResult Delete(RemoveAccountDto inputAccount)
         {
-            if (ModelState.IsValid)
+            try
             {
-                if (submit == "Thêm")
-                {
-                    if (model != null)
-                    {
-                        //model.Name = model.Name.ToString();
-                        //model.UserName = model.UserName.ToString();
-                        //model.Password = Encryptor.MD5Hash(model.Password.ToString());
-                        //model.CreatedDate = model.CreatedDate.GetValueOrDefault(System.DateTime.Now);
-                        //model.Status = model.Status;
-                        //model.GroupID = model.GroupID.ToString();
-                        //db.Users.Add(model);
-                        //db.SaveChanges();
-                        //model = null;
-
-                    }
-                    //List<UserGroup> listper = db.UserGroups.ToList();
-                    //ViewBag.listuser = listper;
-                    //List<User> list = GetData();
-                    //ViewBag.list = list;
-                    //SetAlert("Thêm user thành công", "success");
-                    return RedirectToAction("Index");
-                }
-                else if (submit == "Cập Nhật")
-                {
-                    if (model != null)
-                    {
-                        //var listupdate = db.Users.SingleOrDefault(x => x.UserID == model.UserID);
-                        //listupdate.Name = model.Name;
-                        //listupdate.UserName = model.UserName;
-                        //listupdate.Password = Encryptor.MD5Hash(model.Password);
-                        //listupdate.CreatedDate = model.CreatedDate.GetValueOrDefault(System.DateTime.Now);
-                        //listupdate.Status = model.Status;
-                        //model.GroupID = model.GroupID;
-                        //db.SaveChanges();
-                        //model = null;
-                    }
-                    //List<UserGroup> listper = db.UserGroups.ToList();
-                    //ViewBag.listuser = listper;
-                    //List<User> list = GetData();
-                    //ViewBag.list = list;
-                    //SetAlert("Sửa user thành công", "success");
-                    return RedirectToAction("Index");
-                }
-                else if (submit == "Tìm")
-                {
-                    //if (!string.IsNullOrEmpty(model.UserName))
-                    //{
-                    //    List<User> list = GetData().Where(s => s.UserName.Contains(model.UserName)).
-                    //        ToList();
-                    //    return View("Index", list);
-                    //}
-                    //else
-                    //{
-                    //    List<User> list = GetData();
-                    //    return View("Index", list);
-                    //}
-                }
-                else
-                {
-                    //List<User> list = GetData().OrderBy(s => s.Name).ToList();
-                    //return View("Index", list);
-                }
+                var removeAccountCommand = new RemoveAccountCommand(inputAccount.Id);
+                this.accountService.Remove(removeAccountCommand);
+                SetAlert("Xóa tài khoản thành công!", "success");
+                return RedirectToAction("Index");
+            }
+            catch (DomainException e)
+            {
+                SetAlert(e.Message, "danger");
+                return RedirectToAction("Index");
+            }
+            catch (ApplicationServiceException e)
+            {
+                SetAlert(e.Message, "danger");
+                return RedirectToAction("Index");
+            }
+            catch (Exception e)
+            {
+                SetAlert(e.Message, "danger");
+                return RedirectToAction("Index");
             }
 
-            var newAccount = new AccountDTO();
-            var userGroups = this.userQuery.GetAccountGroups();
-            ViewBag.UserGroups = userGroups;
-            return PartialView("_UserModal", newAccount);
         }
     }
 }

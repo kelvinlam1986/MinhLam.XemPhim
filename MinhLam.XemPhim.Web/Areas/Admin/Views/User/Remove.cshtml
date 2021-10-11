@@ -1,0 +1,14 @@
+﻿@model RemoveAccountDto
+
+<form asp-action="Delete"
+      method="post">
+    <div class="modal-body">
+        Bạn có chắc muốn xoá tài khoản '@(Model.UserName)'  (@(Model.Name)) ?
+        <input type="hidden"
+               class="form-control" asp-for="Id" />
+    </div>
+    <div class="modal-footer clearfix">
+        <button type="submit" class="btn btn-primary"> Xoá</button>
+        <button type="button" class="btn btn-danger" data-dismiss="modal"> Không</button>
+    </div>
+</form>
