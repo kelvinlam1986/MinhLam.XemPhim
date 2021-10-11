@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MinhLam.XemPhim.Application.Admin.InputModel;
+using MinhLam.XemPhim.Application.Admin.ListModel;
 using MinhLam.XemPhim.Application.Admin.Query;
 using MinhLam.XemPhim.Domain.Entities;
 using System;
@@ -60,6 +61,30 @@ namespace MinhLam.XemPhim.Infrastructure.Admin
             }
 
             return null;
+        }
+
+        public UserRoleDto GetUserRolesOfAccount(Guid userId)
+        {
+            var userRole = this.context.Accounts.Include(x => x.UserRoles).FirstOrDefault(x => x.Id == userId);
+            if (userRole == null)
+            {
+                return null;
+            }
+
+            var userRoleDto = new UserRoleDto();
+            userRoleDto.UserId = userRole.Id;
+            userRoleDto.UserName = userRole.Username;
+
+            foreach (var roleDetail in userRole.UserRoles)
+            {
+                userRoleDto.Roles.Add(new DetailUseRole
+                {
+                    Id = roleDetail.Id,
+                    Name = roleDetail.RoleName
+                });
+            }
+
+            return userRoleDto;
         }
     }
 }
