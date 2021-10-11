@@ -181,5 +181,35 @@ namespace MinhLam.XemPhim.Web.Areas.Admin.Controllers
             }
 
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [WithRole(RoleNames = "VIEW_USER_READONLY,UPDATE_USER")]
+        public IActionResult ToggleActive(ToggleActiveAccountDto inputAccount)
+        {
+            try
+            {
+                var toggleActiveCommand = new ToggleActiveAccountCommand(inputAccount.Id);
+                this.accountService.ToggleActive(toggleActiveCommand);
+                string message = inputAccount.IsActive ? "Bỏ kích hoạt " : "Kích hoạt"; 
+                SetAlert($"{message} tài khoản thành công!", "success");
+                return RedirectToAction("Index");
+            }
+            catch (DomainException e)
+            {
+                SetAlert(e.Message, "danger");
+                return RedirectToAction("Index");
+            }
+            catch (ApplicationServiceException e)
+            {
+                SetAlert(e.Message, "danger");
+                return RedirectToAction("Index");
+            }
+            catch (Exception e)
+            {
+                SetAlert(e.Message, "danger");
+                return RedirectToAction("Index");
+            }
+        }
     }
 }

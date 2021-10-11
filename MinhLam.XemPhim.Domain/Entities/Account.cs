@@ -261,6 +261,12 @@ namespace MinhLam.XemPhim.Domain.Entities
             RemoveRoles(accountRepository);
             accountRepository.Remove(this);
         }
+
+        public void ToggleActive(IAccountRepository accountRepository)
+        {
+            IsActive = !IsActive;
+            accountRepository.Update(this);
+        }
     }
 
     public enum UserType

@@ -1,0 +1,16 @@
+﻿@model ToggleActiveAccountDto
+
+<form asp-action="ToggleActive"
+      method="post">
+    <div class="modal-body">
+        Bạn có chắc muốn @(Model.IsActive ? "bỏ kích hoạt" : "kích hoạt") tài khoản '@(Model.UserName)'  (@(Model.Name)) ?
+        <input type="hidden"
+               class="form-control" asp-for="Id" />
+        <input type="hidden"
+               class="form-control" asp-for="IsActive" />
+    </div>
+    <div class="modal-footer clearfix">
+        <button type="submit" class="btn btn-primary"> @(Model.IsActive ? "Bỏ kích hoạt" : "Kích hoạt")</button>
+        <button type="button" class="btn btn-danger" data-dismiss="modal"> Không</button>
+    </div>
+</form>

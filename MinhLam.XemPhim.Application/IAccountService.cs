@@ -8,5 +8,6 @@ namespace MinhLam.XemPhim.Application
         void AddNew(AddNewAccountCommand cmd);
         void Update(UpdateAccountCommand cmd);
         void Remove(RemoveAccountCommand cmd);
+        void ToggleActive(ToggleActiveAccountCommand cmd);
     }
 }

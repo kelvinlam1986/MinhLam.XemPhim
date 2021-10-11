@@ -66,19 +66,20 @@
                         <td class="tr-shadow">@item.Phone</td>
                         <td class="tr-shadow">@item.CreatedDate.ToString("dd/MM/yyyy")</td>
                         <td>
-                            <a href="#" class="btn btn-outline-success" data-id="@item.Id">
+                            <button href="#" class="btn btn-outline-success"
+                                    data-toggle="modal" data-target="#ToggleActive@(item.Id)">
                                 @{
                                     if (item.IsActive)
                                     {
-                                        <i class="fa fa-lock"></i>
+                                        <i class="fa fa-unlock"></i>
                                     }
                                     else
                                     {
-                                        <i class="fa fa-unlock"></i>
+                                        <i class="fa fa-lock"></i>
                                     }
                                 }
 
-                            </a>
+                            </button>
                             <a title="Sửa" class="btn btn-outline-success" asp-action="Edit" asp-route-id="@item.Id">
                                 <i class="fa fa-pencil"></i>
                             </a>
@@ -110,7 +111,36 @@
                                                 UserName = item.Username
                                             };
                                         }
-                                        <partial name="Remove" model="@removeCustomer"/>
+                                        <partial name="Remove" model="@removeCustomer" />
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Toggle Active User Modal -->
+                            <div class="modal fade" id="ToggleActive@(item.Id)"
+                                 tabindex="-1"
+                                 role="dialog"
+                                 aria-labelledby="myModalLabel"
+                                 aria-hidden="true"
+                                 style="display: none;">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title"> Kích hoạt tài khoản</h5>
+                                            <button type="button" class="close"
+                                                    data-dismiss="modal" aria-hidden="true">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        @{
+                                            var toggleActive = new ToggleActiveAccountDto
+                                            {
+                                                Id = item.Id,
+                                                Name = item.Name,
+                                                UserName = item.Username,
+                                                IsActive = item.IsActive
+                                            };
+                                        }
+                                        <partial name="ToggleActive" model="@toggleActive" />
                                     </div>
                                 </div>
                             </div>

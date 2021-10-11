@@ -17,22 +17,19 @@ namespace MinhLam.XemPhim.Infrastructure.Services
         private readonly ICheckExisting checkExisting;
         private readonly IGetData getData;
         private readonly IUnitOfWork unitOfWork;
-        private readonly MovieContext context;
 
         public AccountService(
             IAccountRepository accountRepository,
             IPasswordHasher passwordHasher,
             ICheckExisting checkExisting,
             IGetData getData,
-            IUnitOfWork unitOfWork,
-            MovieContext context)
+            IUnitOfWork unitOfWork)
         {
             this.accountRepository = accountRepository;
             this.passwordHasher = passwordHasher;
             this.checkExisting = checkExisting;
             this.getData = getData;
             this.unitOfWork = unitOfWork;
-            this.context = context;
         }
 
         public void AddNew(AddNewAccountCommand cmd)
@@ -112,7 +109,7 @@ namespace MinhLam.XemPhim.Infrastructure.Services
             }
 
             account.Update(cmd.Name, cmd.Phone, cmd.IsActive, cmd.GroupId, checkExisting, getData, accountRepository);
-            this.context.SaveChanges();
+            this.unitOfWork.Commit();
         }
 
         public void Remove(RemoveAccountCommand cmd)
@@ -126,7 +123,21 @@ namespace MinhLam.XemPhim.Infrastructure.Services
             }
 
             account.Remove(checkExisting, accountRepository);
-            this.context.SaveChanges();
+            this.unitOfWork.Commit();
+        }
+
+        public void ToggleActive(ToggleActiveAccountCommand cmd)
+        {
+            var account = this.getData.GetAccountAndRoles(cmd.Id);
+            if (account == null)
+            {
+                throw new ApplicationServiceException(
+                    ApplicationExceptionCodes.AccountNotExist,
+                    "Tài khoản không tồn tại. Xin liên hệ quản trị để kiểm tra lại.");
+            }
+
+            account.ToggleActive(accountRepository);
+            this.unitOfWork.Commit();
         }
     }
 }
