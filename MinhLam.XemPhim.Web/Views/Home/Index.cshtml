@@ -1,0 +1,67 @@
+﻿@{
+    ViewData["Title"] = "Trang chủ";
+    var Slides = (List<SlideViewModel>)ViewBag.Slides;
+    var NewMovies = (List<NewMoveViewModel>)ViewBag.NewMovies;
+}
+
+@section slide{
+    <!-- banner -->
+    <div id="slidey" style="display:none;">
+        <ul>
+            @foreach (var item in Slides)
+            {
+                <li><img src="@item.Image" alt=" "><div><p class='title' with="250">@item.Name</p></div><p class='description'>@item.Description</p></li>
+
+            }
+        </ul>
+    </div>
+    <script src="~/assets/web/js/jquery.slidey.js"></script>
+    <script src="~/assets/web/js/jquery.dotdotdot.min.js"></script>
+    <script type="text/javascript">
+        $("#slidey").slidey({
+            interval: 8000,
+            listCount: 5,
+            autoplay: false,
+            showList: true
+        });
+        $(".slidey-list-description").dotdotdot();
+    </script>
+    <!--End banner -->
+}
+
+<!-- banner-bottom -->
+<div class="banner-bottom">
+    <div class="w3_agile_banner_bottom_grid">
+        <div id="owl-demo" class="owl-carousel owl-theme">
+            @foreach (var newMovie in NewMovies)
+            {
+                <div class="item">
+                    <div class="w3l-movie-gride-agile w3l-movie-gride-agile1">
+                        <a href="/phim/@newMovie.Id" class="hvr-shutter-out-horizontal">
+                            <img src="@newMovie.Image" title="album-name" class="img-responsive" alt="@newMovie.Name" />
+                            <div class="w3l-action-icon"><i class="fa fa-play-circle" aria-hidden="true"></i></div>
+                        </a>
+                        <div class="mid-1 agileits_w3layouts_mid_1_home">
+                            <div class="w3l-movie-text">
+                                <h6><a href="#">@newMovie.Name</a></h6>
+                            </div>
+                            <div class="mid-2 agile_mid_2_home">
+                                <p>@newMovie.Year</p>
+                                <div class="block-stars">
+                                    <ul class="w3l-ratings">
+                                        <h5 style="font-size:12px;font-weight:bold;background-color:#E3B71E;border-radius:3px;padding:3px;"> Điểm IMDb: @newMovie.Rate</h5>
+
+                                    </ul>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                        </div>
+                        <div class="ribben">
+                            <p>NEW</p>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>

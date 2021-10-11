@@ -1,0 +1,106 @@
+﻿@model EditAccountDto
+@{
+    var UserGroups = (List<AccountGroup>)ViewBag.UserGroups;
+}
+}
+
+<div class="main-content">
+    <div class="section__content section__content--p30">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12 col-md-offset-1">
+                    <div class="card">
+                        <div class="card-header">Cập nhật tài khoản người dùng</div>
+                        <div class="card-body">
+                            <form method="post" asp-action="Update">
+                                <div asp-validation-summary="All" class="text-danger validationsummary"></div>
+                                <input type="hidden" class="form-control" asp-for="Id" required>
+                                <div class="row form-group">
+                                    <div class="col col-md-3">
+                                        <label asp-for="Username" class="control-label mb-1">Tên tài khoản</label>
+                                    </div>
+                                    <div class="col-12 col-md-9">
+                                        <input id="username" readonly asp-for="Username" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col col-md-3">
+                                        <label asp-for="Name" class="control-label mb-1">Tên người dùng</label>
+                                    </div>
+                                    <div class="col-12 col-md-9">
+                                        <input id="name" asp-for="Name" class="form-control">
+                                        <span asp-validation-for="Name" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col col-md-3">
+                                        <label asp-for="Email" class="control-label mb-1">Email</label>
+                                    </div>
+                                    <div class="col-12 col-md-9">
+                                        <input id="username" readonly asp-for="Email" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col col-md-3">
+                                        <label asp-for="Phone" class="control-label mb-1">Số điện thoại</label>
+                                    </div>
+                                    <div class="col-12 col-md-9">
+                                        <input id="username" asp-for="Phone" class="form-control">
+                                        <span asp-validation-for="Phone" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col col-md-3">
+                                        <label asp-for="GroupId" class=" form-control-label">Loại tài khoản</label>
+                                    </div>
+                                    <div class="col-12 col-md-9">
+                                        <select asp-for="GroupId" id="groupId" class="form-control">
+                                            @foreach (var group in UserGroups)
+                                            {
+                                                <option value="@group.Id">@group.Name</option>
+                                            }
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col col-md-3">
+                                        <label asp-for="IsActive" class=" form-control-label">Kích hoạt</label>
+                                    </div>
+                                    <div class="col col-md-9">
+                                        <div class="form-check-inline form-check">
+                                            <label asp-for="IsActive" class="form-check-label ">
+                                                <input type="checkbox" id="isActive"
+                                                       asp-for="IsActive" checked class="form-check-input">
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <button id="save-button" type="submit" class="btn btn-lg btn-info btn-block">
+                                                <i class="fa fa-save fa-lg"></i>&nbsp;
+                                                <span id="button-save">Lưu</span>
+                                            </button>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <a href="@Url.Action("Index", "User")" class="btn btn-lg btn-info btn-block">
+                                                <button id="cancel-button" type="button">
+                                                    <i class="fa fa-close fa-lg"></i>&nbsp;
+                                                    <span id="button-save">Trở về</span>
+                                                </button>
+                                            </a>
+
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
