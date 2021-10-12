@@ -31,5 +31,15 @@ namespace MinhLam.XemPhim.Infrastructure.Domains
             return this.context.GroupRoles.Where(x => x.GroupId == groupId)
                         .ToList().Select(x => x.RoleName).ToList();
         }
+
+        public List<Role> GetRoles()
+        {
+            return this.context.Roles.ToList();
+        }
+
+        public UserRoles GetUserRoleById(Guid id)
+        {
+            return this.context.UserRoles.FirstOrDefault(x => x.Id == id);
+        }
     }
 }

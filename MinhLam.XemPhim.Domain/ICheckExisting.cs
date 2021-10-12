@@ -8,5 +8,6 @@ namespace MinhLam.XemPhim.Domain
         bool AccountExistWithEmail(string email);
         bool AccountGroupExistWithId(Guid id);
         bool AccountExistWithId(Guid id);
+        bool RoleExistWithName(string roleName);
     }
 }

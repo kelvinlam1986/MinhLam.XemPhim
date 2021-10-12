@@ -253,6 +253,28 @@ namespace MinhLam.XemPhim.Domain.Entities
             this.UserRoles.Remove(userRole);
         }
 
+        public void AddRole(
+            string roleName, 
+            ICheckExisting checkExisting, 
+            IAccountRepository accountRepository)
+        {
+            if (checkExisting.RoleExistWithName(roleName) == false)
+            {
+                throw new DomainException(DomainExceptionCodes.UserRoleNotExist,
+                   $"Không tìm thấy role với name {roleName} trong danh sách định nghĩa");
+            }
+
+            if (this.UserRoles.Any(x => x.RoleName == roleName))
+            {
+                throw new DomainException(DomainExceptionCodes.UserRoleAlreadyExistInAccount,
+                  $"Role này {roleName} đã tồn tại trong tài khoản của bạn");
+            }
+
+            var newUserRole = Entities.UserRoles.New(roleName, Id);
+            this.UserRoles.Add(newUserRole);
+            accountRepository.AddRole(newUserRole);
+        }
+
         private void UpdateRole(List<string> newRoles, IAccountRepository accountRepository)
         {
             foreach (var userRole in this.UserRoles)

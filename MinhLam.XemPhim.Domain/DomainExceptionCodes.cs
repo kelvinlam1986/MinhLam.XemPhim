@@ -14,5 +14,6 @@
         public const string AccountGroupNotExist = "account_group_not_exist";
         public const string AccountNotExist = "account_not_exist";
         public const string UserRoleNotExist = "user_role_not_exist";
+        public const string UserRoleAlreadyExistInAccount = "user_role_already_exist_in_account";
     }
 }

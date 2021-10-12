@@ -9,6 +9,7 @@ namespace MinhLam.XemPhim.Domain
         AccountGroup GetAccountGroupById(Guid id);
         List<string> GetListRolesNameByGroupId(Guid groupId);
         Account GetAccountAndRoles(Guid id);
-
+        UserRoles GetUserRoleById(Guid id);
+        List<Role> GetRoles();
     }
 }

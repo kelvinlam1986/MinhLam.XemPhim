@@ -36,5 +36,11 @@ namespace MinhLam.XemPhim.Infrastructure.Domains
             var accountGroup = this.context.AccountGroups.FirstOrDefault(x => x.Id == id);
             return accountGroup != null;
         }
+
+        public bool RoleExistWithName(string roleName)
+        {
+            var role = this.context.Roles.FirstOrDefault(x => x.Name == roleName);
+            return role != null;
+        }
     }
 }

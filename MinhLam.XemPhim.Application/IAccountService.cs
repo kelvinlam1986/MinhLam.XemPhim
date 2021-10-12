@@ -10,5 +10,6 @@ namespace MinhLam.XemPhim.Application
         void Remove(RemoveAccountCommand cmd);
         void ToggleActive(ToggleActiveAccountCommand cmd);
         void RemoveUserRole(RemoveUserRoleCommand cmd);
+        void AddUserRole(AddUserRoleCommand cmd);
     }
 }

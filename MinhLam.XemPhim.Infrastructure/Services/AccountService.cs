@@ -166,5 +166,19 @@ namespace MinhLam.XemPhim.Infrastructure.Services
             account.RemoveRole(userRole.Id, accountRepository);
             unitOfWork.Commit();
         }
+
+        public void AddUserRole(AddUserRoleCommand cmd)
+        {
+            var account = this.getData.GetAccountAndRoles(cmd.UserId);
+            if (account == null)
+            {
+                throw new ApplicationServiceException(
+                    ApplicationExceptionCodes.AccountNotExist,
+                    "Tài khoản không tồn tại. Xin liên hệ quản trị để kiểm tra lại.");
+            }
+           
+            account.AddRole(cmd.RoleName, checkExisting, accountRepository);
+            this.unitOfWork.Commit();
+        }
     }
 }

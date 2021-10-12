@@ -4,6 +4,8 @@ using MinhLam.XemPhim.Application;
 using MinhLam.XemPhim.Application.Admin.InputModel;
 using MinhLam.XemPhim.Application.Admin.Query;
 using MinhLam.XemPhim.Application.Commands;
+using MinhLam.XemPhim.Domain;
+using MinhLam.XemPhim.Domain.Repositories;
 using MinhLam.XemPhim.Web.Attributes;
 using System;
 
@@ -14,13 +16,19 @@ namespace MinhLam.XemPhim.Web.Areas.Admin.Controllers
     {
         private readonly IUserQuery userQuery;
         private readonly IAccountService accountService;
+        private readonly IGetData getData;
+        private readonly IAccountRepository accountRepository;
 
         public AssignRoleController(
             IUserQuery userQuery,
-            IAccountService accountService)
+            IAccountService accountService,
+            IAccountRepository accountRepository,
+            IGetData getData)
         {
             this.userQuery = userQuery;
             this.accountService = accountService;
+            this.accountRepository = accountRepository;
+            this.getData = getData;
         }
 
         [WithRole(RoleNames = "VIEW_USER_READONLY, INSERT_USER, UPDATE_USER")]
@@ -79,6 +87,71 @@ namespace MinhLam.XemPhim.Web.Areas.Admin.Controllers
             {
                 SetAlert(e.Message, "danger");
                 return RedirectToAction("Configure", new { id = inputModel.UserId });
+            }
+        }
+
+        [WithRole(RoleNames = "VIEW_USER_READONLY, INSERT_USER, UPDATE_USER")]
+        public IActionResult AddUserRole(Guid userId)
+        {
+            if (userId == Guid.Empty)
+            {
+                SetAlert("Không tìm thấy tài khoản", "error");
+                return RedirectToAction("Configure", new { id = userId });
+            }
+
+            var user = this.accountRepository.GetById(userId);
+            if (user == null)
+            {
+                SetAlert("Không tìm thấy tài khoản", "error");
+                return RedirectToAction("Configure", new { id = userId });
+            }
+
+            var addUserRoleDto = new AddUserRoleDto();
+            addUserRoleDto.UserId = user.Id;
+            addUserRoleDto.Username = user.Username;
+
+            var roles = this.getData.GetRoles();
+            ViewBag.Roles = roles;
+            return View(addUserRoleDto);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [WithRole(RoleNames = "VIEW_USER_READONLY,UPDATE_USER")]
+        public IActionResult InsertUserRole(AddUserRoleDto inputModel)
+        {
+            var roles = this.getData.GetRoles();
+            ViewBag.Roles = roles;
+            var addUserRoleDto = new AddUserRoleDto();
+            addUserRoleDto.UserId = inputModel.UserId;
+            addUserRoleDto.Username = inputModel.Username;
+
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    var addUserRoleCommand = new AddUserRoleCommand(inputModel.UserId, inputModel.RoleName);
+                    this.accountService.AddUserRole(addUserRoleCommand);
+                    SetAlert("Tạo role thành công!", "success");
+                    return RedirectToAction("Configure", new { id = inputModel.UserId });
+                }
+             
+                return View("AddUserRole", addUserRoleDto);
+            }
+            catch (DomainException e)
+            {
+                ModelState.AddModelError("", e.Message);
+                return View("AddUserRole", addUserRoleDto);
+            }
+            catch (ApplicationServiceException e)
+            {
+                ModelState.AddModelError("", e.Message);
+                return View("AddUserRole", addUserRoleDto);
+            }
+            catch (Exception e)
+            {
+                ModelState.AddModelError("", OperationExceptionCodes.Message);
+                return View("AddUserRole", addUserRoleDto);
             }
         }
     }
