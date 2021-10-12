@@ -3,182 +3,181 @@
 
 
 <div class="main-content">
-    <div class="section__content section__content--p30">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-md-12 col-md-offset-1">
-                    <div class="card">
-                        <div class="card-header">
-                            <h6 class="card-title">Danh sách người dùng </h6>
-                        </div>
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="table-data__tool">
-                                        <div class="table-data__tool-left">
-                                            <div class="rs-select2--light rs-select2--md">
-                                                <form class="form-header" action="" method="POST">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12 col-md-offset-1">
+                <div class="card">
+                    <div class="card-header">
+                        <h6 class="card-title">Danh sách người dùng </h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="table-data__tool">
+                                    <div class="table-data__tool-left">
+                                        <div class="rs-select2--light rs-select2--md">
+                                            <form class="form-header" action="" method="POST">
 
-                                                    <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Tìm kiếm" class="au-input au-input--xl">
-                                                </form>
+                                                <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Tìm kiếm" class="au-input au-input--xl">
+                                            </form>
 
-                                            </div>
                                         </div>
-                                        <div class="table-data__tool-right">
-                                            <a asp-action="New" asp-controller="User" asp-area="Admin">
-                                                <button class="au-btn au-btn-icon au-btn--green au-btn--small">
-                                                    <i class="fa fa-plus"></i>&nbsp;&nbsp;Thêm mới
-                                                </button>
-                                            </a>
+                                    </div>
+                                    <div class="table-data__tool-right">
+                                        <a asp-action="New" asp-controller="User" asp-area="Admin">
+                                            <button class="au-btn au-btn-icon au-btn--green au-btn--small">
+                                                <i class="fa fa-plus"></i>&nbsp;&nbsp;Thêm mới
+                                            </button>
+                                        </a>
 
-                                            <a href="/Admin/User">
-                                                <button class="au-btn au-btn-icon au-btn--green au-btn--small">
-                                                    <i class="fa fa-refresh"></i>&nbsp;&nbsp;LÀM MỚI
-                                                </button>
-                                            </a>
-                                        </div>
+                                        <a href="/Admin/User">
+                                            <button class="au-btn au-btn-icon au-btn--green au-btn--small">
+                                                <i class="fa fa-refresh"></i>&nbsp;&nbsp;LÀM MỚI
+                                            </button>
+                                        </a>
                                     </div>
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="table-responsive table--no-card m-b-30">
-                                        <div class="table-responsive table-responsive-data2">
-                                            @if (TempData["AlertMessage"] != null)
-                                            {
-                                                <div id="AlertBox" class="alert @TempData["AlertType"] hide" role="alert">
-                                                    @TempData["AlertMessage"]
-                                                </div>
-                                            }
-                                            <table class="table table-data2" id="myTable">
-                                                <thead>
-                                                    <tr>
-                                                        <th>Tài Khoản</th>
-                                                        <th>Nhóm</th>
-                                                        <th>Họ tên</th>
-                                                        <th>Email</th>
-                                                        <th>Phone</th>
-                                                        <th>Ngày Tạo</th>
-                                                        <th></th>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
 
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    @if (@Model != null)
-                                                    {
-                                                        foreach (var item in Model)
-                                                        {
-                                                            <tr style="text-align:left;" id="row_@item.Id.ToString()" class="tr-shadow">
-                                                                <td style="display:none;">@item.Id.ToString()</td>
-                                                                <td class="tr-shadow">@item.Username</td>
-                                                                <td class="tr-shadow">@item.GroupName</td>
-                                                                <td class="tr-shadow">@item.Name</td>
-                                                                <td class="tr-shadow">@item.Email</td>
-                                                                <td class="tr-shadow">@item.Phone</td>
-                                                                <td class="tr-shadow">@item.CreatedDate.ToString("dd/MM/yyyy")</td>
-                                                                <td>
-                                                                    <button href="#" class="btn btn-outline-success"
-                                                                            data-toggle="modal" data-target="#ToggleActive@(item.Id)">
-                                                                        @{
-                                                                            if (item.IsActive)
-                                                                            {
-                                                                                <i class="fa fa-unlock"></i>
-                                                                            }
-                                                                            else
-                                                                            {
-                                                                                <i class="fa fa-lock"></i>
-                                                                            }
-                                                                        }
-
-                                                                    </button>
-                                                                    <a title="Sửa" class="btn btn-outline-success" asp-action="Edit" asp-route-id="@item.Id">
-                                                                        <i class="fa fa-pencil"></i>
-                                                                    </a>
-                                                                    <button class="btn btn-outline-danger" type="button"
-                                                                            data-toggle="modal" data-target="#RemoveUser@(item.Id)">
-                                                                        <i class="fa fa-trash-o"></i>
-                                                                    </button>
-                                                                    <!-- Remove User Modal -->
-                                                                    <div class="modal fade" id="RemoveUser@(item.Id)"
-                                                                         tabindex="-1"
-                                                                         role="dialog"
-                                                                         aria-labelledby="myModalLabel"
-                                                                         aria-hidden="true"
-                                                                         style="display: none;">
-                                                                        <div class="modal-dialog">
-                                                                            <div class="modal-content">
-                                                                                <div class="modal-header">
-                                                                                    <h5 class="modal-title"> Xoá tài khoản</h5>
-                                                                                    <button type="button" class="close"
-                                                                                            data-dismiss="modal" aria-hidden="true">
-                                                                                        <span aria-hidden="true">&times;</span>
-                                                                                    </button>
-                                                                                </div>
-                                                                                @{
-                                                                                    var removeCustomer = new RemoveAccountDto
-                                                                                    {
-                                                                                        Id = item.Id,
-                                                                                        Name = item.Name,
-                                                                                        UserName = item.Username
-                                                                                    };
-                                                                                }
-                                                                                <partial name="Remove" model="@removeCustomer" />
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    <!-- Toggle Active User Modal -->
-                                                                    <div class="modal fade" id="ToggleActive@(item.Id)"
-                                                                         tabindex="-1"
-                                                                         role="dialog"
-                                                                         aria-labelledby="myModalLabel"
-                                                                         aria-hidden="true"
-                                                                         style="display: none;">
-                                                                        <div class="modal-dialog">
-                                                                            <div class="modal-content">
-                                                                                <div class="modal-header">
-                                                                                    <h5 class="modal-title"> Kích hoạt tài khoản</h5>
-                                                                                    <button type="button" class="close"
-                                                                                            data-dismiss="modal" aria-hidden="true">
-                                                                                        <span aria-hidden="true">&times;</span>
-                                                                                    </button>
-                                                                                </div>
-                                                                                @{
-                                                                                    var toggleActive = new ToggleActiveAccountDto
-                                                                                    {
-                                                                                        Id = item.Id,
-                                                                                        Name = item.Name,
-                                                                                        UserName = item.Username,
-                                                                                        IsActive = item.IsActive
-                                                                                    };
-                                                                                }
-                                                                                <partial name="ToggleActive" model="@toggleActive" />
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </td>
-                                                            </tr>
-                                                        }
-                                                    }
-                                                </tbody>
-                                            </table>
-
-                                            <ul class="pagination modal-6" style="width:250px">
-
-                                                <li>
-                                                    @Html.PagedListPager(Model, page => Url.Action("Index", "User",
-                                               new { Page = page }),
-                                               new PagedListRenderOptions
-                                                {
-                                                   LiElementClasses = new string[] { "page-item" },
-                                                   PageClasses = new string[] { "page-link" }
-                                                })
-
-                                                </li>
-
-                                            </ul>
-                                        </div>
+                            </div>
+                        </div>
+                        <div class="table-responsive table--no-card m-b-30">
+                            <div class="table-responsive table-responsive-data2">
+                                @if (TempData["AlertMessage"] != null)
+                                {
+                                    <div id="AlertBox" class="alert @TempData["AlertType"] hide" role="alert">
+                                        @TempData["AlertMessage"]
                                     </div>
-                                </div>
+                                }
+                                <table class="table table-data2" id="myTable">
+                                    <thead>
+                                        <tr>
+                                            <th>Tài Khoản</th>
+                                            <th>Nhóm</th>
+                                            <th>Họ tên</th>
+                                            <th>Email</th>
+                                            <th>Phone</th>
+                                            <th>Ngày Tạo</th>
+                                            <th></th>
+
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @if (@Model != null)
+                                        {
+                                            foreach (var item in Model)
+                                            {
+                                                <tr style="text-align:left;" id="row_@item.Id.ToString()" class="tr-shadow">
+                                                    <td style="display:none;">@item.Id.ToString()</td>
+                                                    <td class="tr-shadow">@item.Username</td>
+                                                    <td class="tr-shadow">@item.GroupName</td>
+                                                    <td class="tr-shadow">@item.Name</td>
+                                                    <td class="tr-shadow">@item.Email</td>
+                                                    <td class="tr-shadow">@item.Phone</td>
+                                                    <td class="tr-shadow">@item.CreatedDate.ToString("dd/MM/yyyy")</td>
+                                                    <td>
+                                                        <button href="#" class="btn btn-outline-success"
+                                                                data-toggle="modal" data-target="#ToggleActive@(item.Id)">
+                                                            @{
+                                                                if (item.IsActive)
+                                                                {
+                                                                    <i class="fa fa-unlock"></i>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <i class="fa fa-lock"></i>
+                                                                }
+                                                            }
+
+                                                        </button>
+                                                        <a title="Sửa" class="btn btn-outline-success" asp-action="Edit" asp-route-id="@item.Id">
+                                                            <i class="fa fa-pencil"></i>
+                                                        </a>
+                                                        <button class="btn btn-outline-danger" type="button"
+                                                                data-toggle="modal" data-target="#RemoveUser@(item.Id)">
+                                                            <i class="fa fa-trash-o"></i>
+                                                        </button>
+                                                        <!-- Remove User Modal -->
+                                                        <div class="modal fade" id="RemoveUser@(item.Id)"
+                                                             tabindex="-1"
+                                                             role="dialog"
+                                                             aria-labelledby="myModalLabel"
+                                                             aria-hidden="true"
+                                                             style="display: none;">
+                                                            <div class="modal-dialog">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                        <h5 class="modal-title"> Xoá tài khoản</h5>
+                                                                        <button type="button" class="close"
+                                                                                data-dismiss="modal" aria-hidden="true">
+                                                                            <span aria-hidden="true">&times;</span>
+                                                                        </button>
+                                                                    </div>
+                                                                    @{
+                                                                        var removeCustomer = new RemoveAccountDto
+                                                                        {
+                                                                            Id = item.Id,
+                                                                            Name = item.Name,
+                                                                            UserName = item.Username
+                                                                        };
+                                                                    }
+                                                                    <partial name="Remove" model="@removeCustomer" />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <!-- Toggle Active User Modal -->
+                                                        <div class="modal fade" id="ToggleActive@(item.Id)"
+                                                             tabindex="-1"
+                                                             role="dialog"
+                                                             aria-labelledby="myModalLabel"
+                                                             aria-hidden="true"
+                                                             style="display: none;">
+                                                            <div class="modal-dialog">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                        <h5 class="modal-title"> Kích hoạt tài khoản</h5>
+                                                                        <button type="button" class="close"
+                                                                                data-dismiss="modal" aria-hidden="true">
+                                                                            <span aria-hidden="true">&times;</span>
+                                                                        </button>
+                                                                    </div>
+                                                                    @{
+                                                                        var toggleActive = new ToggleActiveAccountDto
+                                                                        {
+                                                                            Id = item.Id,
+                                                                            Name = item.Name,
+                                                                            UserName = item.Username,
+                                                                            IsActive = item.IsActive
+                                                                        };
+                                                                    }
+                                                                    <partial name="ToggleActive" model="@toggleActive" />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            }
+                                        }
+                                    </tbody>
+                                </table>
+
+                                <ul class="pagination modal-6" style="width:250px">
+
+                                    <li>
+                                        @Html.PagedListPager(Model, page => Url.Action("Index", "User",
+                                   new { Page = page }),
+                                   new PagedListRenderOptions
+                                    {
+                                       LiElementClasses = new string[] { "page-item" },
+                                       PageClasses = new string[] { "page-link" }
+                                    })
+
+                                    </li>
+
+                                </ul>
                             </div>
                         </div>
                     </div>

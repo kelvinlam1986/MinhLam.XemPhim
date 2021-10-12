@@ -168,35 +168,7 @@ namespace MinhLam.XemPhim.Domain.Entities
             var newUserRole = Domain.Entities.UserRoles.New(roleName, Id);
             this.UserRoles.Add(newUserRole);
         }
-
-        public void UpdateRole(List<string> newRoles, IAccountRepository accountRepository)
-        {
-            foreach (var userRole in this.UserRoles)
-            {
-                accountRepository.RemoveRole(userRole);
-            }
-
-            this.UserRoles.Clear();
-            foreach (var newRole in newRoles)
-            {
-                AddRole(newRole);
-            }
-
-            foreach (var userRole in this.UserRoles)
-            {
-                accountRepository.AddRole(userRole);
-            }
-        }
-
-        public void RemoveRoles(IAccountRepository accountRepository)
-        {
-            foreach (var userRole in this.UserRoles)
-            {
-                accountRepository.RemoveRole(userRole);
-            }
-
-            this.UserRoles.Clear();
-        }
+     
 
         public void Update(
             string name, 
@@ -258,7 +230,7 @@ namespace MinhLam.XemPhim.Domain.Entities
                     "Không tìm thấy tài khoản");
             }
 
-            RemoveRoles(accountRepository);
+            ClearRoles(accountRepository);
             accountRepository.Remove(this);
         }
 
@@ -266,6 +238,48 @@ namespace MinhLam.XemPhim.Domain.Entities
         {
             IsActive = !IsActive;
             accountRepository.Update(this);
+        }
+
+        public void RemoveRole(Guid userRoleId, IAccountRepository accountRepository)
+        {
+            var userRole = this.UserRoles.FirstOrDefault(x => x.Id == userRoleId);
+            if (userRole == null)
+            {
+                throw new DomainException(DomainExceptionCodes.UserRoleNotExist,
+                    $"Không tìm thấy role với id {userRoleId}");
+            }
+
+            accountRepository.RemoveRole(userRole);
+            this.UserRoles.Remove(userRole);
+        }
+
+        private void UpdateRole(List<string> newRoles, IAccountRepository accountRepository)
+        {
+            foreach (var userRole in this.UserRoles)
+            {
+                accountRepository.RemoveRole(userRole);
+            }
+
+            this.UserRoles.Clear();
+            foreach (var newRole in newRoles)
+            {
+                AddRole(newRole);
+            }
+
+            foreach (var userRole in this.UserRoles)
+            {
+                accountRepository.AddRole(userRole);
+            }
+        }
+
+        private void ClearRoles(IAccountRepository accountRepository)
+        {
+            foreach (var userRole in this.UserRoles)
+            {
+                accountRepository.RemoveRole(userRole);
+            }
+
+            this.UserRoles.Clear();
         }
     }
 

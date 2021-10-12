@@ -10,5 +10,6 @@
         public const string UserNotAdminPage = "user_not_admin_page";
         public const string UnexpectedError = "unexpected_error";
         public const string AccountNotExist = "account_not_exist";
+        public const string UserRoleNotExist = "user_role_not_exist";
     }
 }

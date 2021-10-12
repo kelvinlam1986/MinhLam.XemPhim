@@ -1,0 +1,16 @@
+﻿@model RemoveUserRoleDto
+
+<form asp-action="DeleteUserRole"
+      method="post">
+    <div class="modal-body">
+        Bạn có chắc muốn xoá vai trò '@(Model.Name)' ?
+        <input type="hidden"
+               class="form-control" asp-for="Id" value="@(Model.Id)" />
+        <input type="hidden"
+               class="form-control" asp-for="UserId" value="@(Model.UserId)" />
+    </div>
+    <div class="modal-footer clearfix">
+        <button type="submit" class="btn btn-primary"> Xoá</button>
+        <button type="button" class="btn btn-danger" data-dismiss="modal"> Không</button>
+    </div>
+</form>

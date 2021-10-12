@@ -13,5 +13,6 @@
         public const string AccountExistWithEmail = "account_exist_with_email";
         public const string AccountGroupNotExist = "account_group_not_exist";
         public const string AccountNotExist = "account_not_exist";
+        public const string UserRoleNotExist = "user_role_not_exist";
     }
 }

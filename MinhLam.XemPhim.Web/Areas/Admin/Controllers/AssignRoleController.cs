@@ -1,6 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using MinhLam.Framework;
 using MinhLam.XemPhim.Application;
+using MinhLam.XemPhim.Application.Admin.InputModel;
 using MinhLam.XemPhim.Application.Admin.Query;
+using MinhLam.XemPhim.Application.Commands;
 using MinhLam.XemPhim.Web.Attributes;
 using System;
 
@@ -48,6 +51,35 @@ namespace MinhLam.XemPhim.Web.Areas.Admin.Controllers
 
             ViewBag.UserRole = userRole;
             return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [WithRole(RoleNames = "VIEW_USER_READONLY,UPDATE_USER")]
+        public IActionResult DeleteUserRole(RemoveUserRoleDto inputModel)
+        {
+            try
+            {
+                var removeUserRoleCommand = new RemoveUserRoleCommand(inputModel.UserId, inputModel.Id);
+                this.accountService.RemoveUserRole(removeUserRoleCommand);
+                SetAlert("Xóa vai trò thành công!", "success");
+                return RedirectToAction("Configure", new { id = inputModel.UserId });
+            }
+            catch (DomainException e)
+            {
+                SetAlert(e.Message, "danger");
+                return RedirectToAction("Configure", new { id = inputModel.UserId });
+            }
+            catch (ApplicationServiceException e)
+            {
+                SetAlert(e.Message, "danger");
+                return RedirectToAction("Configure", new { id = inputModel.UserId });
+            }
+            catch (Exception e)
+            {
+                SetAlert(e.Message, "danger");
+                return RedirectToAction("Configure", new { id = inputModel.UserId });
+            }
         }
     }
 }

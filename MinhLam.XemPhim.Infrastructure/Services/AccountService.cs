@@ -4,9 +4,7 @@ using MinhLam.XemPhim.Domain.Repositories;
 using MinhLam.XemPhim.Domain.Entities;
 using MinhLam.XemPhim.Application.Commands;
 using MinhLam.XemPhim.Domain;
-using System;
-using System.Data;
-using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace MinhLam.XemPhim.Infrastructure.Services
 {
@@ -138,6 +136,35 @@ namespace MinhLam.XemPhim.Infrastructure.Services
 
             account.ToggleActive(accountRepository);
             this.unitOfWork.Commit();
+        }
+
+        public void RemoveUserRole(RemoveUserRoleCommand cmd)
+        {
+            var account = this.getData.GetAccountAndRoles(cmd.UserId);
+            if (account == null)
+            {
+                throw new ApplicationServiceException(
+                    ApplicationExceptionCodes.AccountNotExist,
+                    "Tài khoản không tồn tại. Xin liên hệ quản trị để kiểm tra lại.");
+            }
+
+            if (account.UserRoles.Count == 0)
+            {
+                throw new ApplicationServiceException(
+                    ApplicationExceptionCodes.UserRoleNotExist,
+                    "Role không tồn tại. Xin liên hệ quản trị để kiểm tra lại.");
+            }
+
+            var userRole = account.UserRoles.FirstOrDefault(x => x.Id == cmd.UserRoleId);
+            if (userRole == null)
+            {
+                throw new ApplicationServiceException(
+                   ApplicationExceptionCodes.UserRoleNotExist,
+                   "Role không tồn tại. Xin liên hệ quản trị để kiểm tra lại.");
+            }
+
+            account.RemoveRole(userRole.Id, accountRepository);
+            unitOfWork.Commit();
         }
     }
 }
