@@ -1,0 +1,86 @@
+﻿
+@model AddAboutDto
+
+<div class="main-content">
+    <div class="section__content section__content--p30">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12 col-md-offset-1">
+                    <div class="card">
+                        <div class="card-header">Thêm mới giới thiệu công ty</div>
+                        <div class="card-body">
+                            <form method="post" asp-action="Create" enctype="multipart/form-data">
+                                <div asp-validation-summary="All" class="text-danger validationsummary"></div>
+                                <div class="row form-group">
+                                    <div class="col col-md-3">
+                                        <label asp-for="Name" class="control-label mb-1">Tên giới thiệu</label>
+                                    </div>
+                                    <div class="col-12 col-md-9">
+                                        <input id="name" asp-for="Name" class="form-control">
+                                        <span asp-validation-for="Name" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col col-md-3">
+                                        <label asp-for="Image" class="control-label mb-1">Ảnh</label>
+                                    </div>
+                                    <div class="col-12 col-md-9">
+                                        <<input id="image" type="file" class="form-control" asp-for="Image" placeholder="Hình" />
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col col-md-3">
+                                        <label asp-for="Description" class="control-label mb-1">Mô tả</label>
+                                    </div>
+                                    <div class="col-12 col-md-9">
+                                        <textarea id="Description" asp-for="Description" value="" class="form-control"></textarea>
+                                        <span asp-validation-for="Description" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col col-md-3">
+                                        <label asp-for="IsActive" class=" form-control-label">Kích hoạt</label>
+                                    </div>
+                                    <div class="col col-md-9">
+                                        <div class="form-check-inline form-check">
+                                            <label asp-for="IsActive" class="form-check-label ">
+                                                <input type="checkbox" id="isActive"
+                                                       asp-for="IsActive" checked class="form-check-input">
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="table-data__tool">
+                                                <div class="table-data__tool-cxvz*">
+                                                    <button id="save-button" type="submit" class="au-btn au-btn-icon au-btn--green au-btn--small">
+                                                        <i class="fa fa-save fa-lg"></i>&nbsp;
+                                                        <span id="button-save">Lưu</span>
+                                                    </button>
+                                                    <a href="@Url.Action("Index", "User")" class="au-btn au-btn-icon au-btn--green au-btn--small">
+                                                        <button id="cancel-button" type="button">
+                                                            <i class="fa fa-close fa-lg"></i>&nbsp;
+                                                            <span id="button-save">Trở về</span>
+                                                        </button>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@section jsFooter {
+   
+}

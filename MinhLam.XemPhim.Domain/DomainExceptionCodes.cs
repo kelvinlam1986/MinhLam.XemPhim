@@ -15,5 +15,8 @@
         public const string AccountNotExist = "account_not_exist";
         public const string UserRoleNotExist = "user_role_not_exist";
         public const string UserRoleAlreadyExistInAccount = "user_role_already_exist_in_account";
+        public const string AboutNameIsBlank = "about_name_is_blank";
+        public const string AboutImageIsBlank = "about_image_is_blank";
+        public const string AboutDescriptionIsBlank = "about_description_is_blank";
     }
 }

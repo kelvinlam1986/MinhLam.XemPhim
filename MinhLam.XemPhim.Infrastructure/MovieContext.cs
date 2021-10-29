@@ -11,6 +11,7 @@ namespace MinhLam.XemPhim.Infrastructure
         public DbSet<Role> Roles { get; set; }
         public DbSet<GroupRoles> GroupRoles { get; set; }
         public DbSet<UserRoles> UserRoles { get; set; }
+        public DbSet<About> Abouts { get; set; }
 
         public MovieContext(DbContextOptions<MovieContext> options) : base(options)
         {
@@ -22,7 +23,7 @@ namespace MinhLam.XemPhim.Infrastructure
             new AccountGroupConfiguration().Configure(modelBuilder.Entity<AccountGroup>());
             new RoleConfiguration().Configure(modelBuilder.Entity<Role>());
             new GroupRolesConfiguration().Configure(modelBuilder.Entity<GroupRoles>());
-
+            new AboutConfiguration().Configure(modelBuilder.Entity<About>());
         }
     }
 }

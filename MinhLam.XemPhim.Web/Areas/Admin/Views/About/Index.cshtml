@@ -1,4 +1,4 @@
-﻿@model IPagedList<AccountDTO>
+﻿@model IPagedList<AboutDto>
 @using X.PagedList.Mvc
 
 
@@ -8,7 +8,7 @@
             <div class="col-md-12 col-md-offset-1">
                 <div class="card">
                     <div class="card-header">
-                        <h6 class="card-title">Danh sách người dùng </h6>
+                        <h6 class="card-title">Danh sách giới thiệu công ty</h6>
                     </div>
                     <div class="card-body">
                         <div class="row">
@@ -24,7 +24,7 @@
                                         </div>
                                     </div>
                                     <div class="table-data__tool-right">
-                                        <a asp-action="New" asp-controller="User" asp-area="Admin">
+                                        <a asp-action="New" asp-controller="About" asp-area="Admin">
                                             <button class="au-btn au-btn-icon au-btn--green au-btn--small">
                                                 <i class="fa fa-plus"></i>&nbsp;&nbsp;Thêm mới
                                             </button>
@@ -55,13 +55,10 @@
                                 <table class="table table-data2" id="myTable">
                                     <thead>
                                         <tr>
-                                            <th>Tài Khoản</th>
-                                            <th>Nhóm</th>
-                                            <th>Họ tên</th>
-                                            <th>Email</th>
-                                            <th>Phone</th>
-                                            <th>Ngày Tạo</th>
-                                            <th></th>
+                                            <th>Tên</th>
+                                            <th>Ảnh</th>
+                                            <th>Mô tả</th>
+                                            <th>Chức năng</th>
 
                                         </tr>
                                     </thead>
@@ -72,12 +69,9 @@
                                             {
                                                 <tr style="text-align:left;" id="row_@item.Id.ToString()" class="tr-shadow">
                                                     <td style="display:none;">@item.Id.ToString()</td>
-                                                    <td class="tr-shadow">@item.Username</td>
-                                                    <td class="tr-shadow">@item.GroupName</td>
                                                     <td class="tr-shadow">@item.Name</td>
-                                                    <td class="tr-shadow">@item.Email</td>
-                                                    <td class="tr-shadow">@item.Phone</td>
-                                                    <td class="tr-shadow">@item.CreatedDate.ToString("dd/MM/yyyy")</td>
+                                                    <td class="tr-shadow"><img src="~/uploads/@item.Image" /></td>
+                                                    <td class="tr-shadow">@item.Description</td>
                                                     <td>
                                                         <button href="#" class="btn btn-outline-success"
                                                                 data-toggle="modal" data-target="#ToggleActive@(item.Id)">
@@ -116,15 +110,15 @@
                                                                             <span aria-hidden="true">&times;</span>
                                                                         </button>
                                                                     </div>
-                                                                    @{
+                                                                    @*@{
                                                                         var removeCustomer = new RemoveAccountDto
                                                                         {
                                                                             Id = item.Id,
                                                                             Name = item.Name,
-                                                                            UserName = item.Username
+                                                                            UserName = item.Description
                                                                         };
                                                                     }
-                                                                    <partial name="Remove" model="@removeCustomer" />
+                                                                    <partial name="Remove" model="@removeCustomer" />*@
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -144,16 +138,16 @@
                                                                             <span aria-hidden="true">&times;</span>
                                                                         </button>
                                                                     </div>
-                                                                    @{
+                                                                    @*@{
                                                                         var toggleActive = new ToggleActiveAccountDto
                                                                         {
                                                                             Id = item.Id,
                                                                             Name = item.Name,
-                                                                            UserName = item.Username,
+                                                                            UserName = item.Description,
                                                                             IsActive = item.IsActive
                                                                         };
                                                                     }
-                                                                    <partial name="ToggleActive" model="@toggleActive" />
+                                                                    <partial name="ToggleActive" model="@toggleActive" />*@
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -167,7 +161,7 @@
                                 <ul class="pagination modal-6" style="width:250px">
 
                                     <li>
-                                        @Html.PagedListPager(Model, page => Url.Action("Index", "User",
+                                        @Html.PagedListPager(Model, page => Url.Action("Index", "About",
                                    new { Page = page }),
                                    new PagedListRenderOptions
                                     {

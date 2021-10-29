@@ -46,8 +46,11 @@ namespace MinhLam.XemPhim.Web
             services.AddScoped<IAccountQuery, AccountQuery>();
             services.AddScoped<IUserRolesQuery, UserRolesQuery>();
             services.AddScoped<IUserQuery, UserQuery>();
+            services.AddScoped<IAboutQuery, AboutQuery>();
             services.AddScoped<IAccountRepository, AccountRepository>();
+            services.AddScoped<IAboutRepository, AboutRepository>();
             services.AddScoped<IAccountService, AccountService>();
+            services.AddScoped<IAboutService, AboutService>();
             services.AddScoped<ICheckExisting, CheckExisting>();
             services.AddScoped<IGetData, GetData>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
@@ -76,7 +79,6 @@ namespace MinhLam.XemPhim.Web
             app.UseSession();
             // app.UseAuthentication();
             app.UseRequestCulture();
-
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
